@@ -1,7 +1,7 @@
 ---
 title: "Data Collection and Data Wrangling"
-author: "Sana Rasheed"
-date: "July 19, 2020"
+author: "Inam U Hassan"
+date: "3/8/2021"
 output: html_document
 ---
 
@@ -30,6 +30,14 @@ USPersonalExpenditure
 
 ```{r }
 ### start solution ####
+head(USPersonalExpenditure)
+USPersonalData<-USPersonalExpenditure
+mean(USPersonalData)
+```
+
+
+```{r }
+sd(USPersonalData)
 ```
 
 
@@ -39,12 +47,10 @@ USPersonalExpenditure
 
 
 ```{r }
-
-```
-
-
-```{r }
-
+dt<-data.frame(USPersonalData)
+dt
+library(dplyr)
+dt %>% group_by(X1940,X1945,X1950,X1955,X1960) %>% summarise(Avg_Score = mean(USPersonalData))
 ```
 
 
@@ -68,6 +74,18 @@ filename <- "msleep_ggplot2.csv"
 
 ```{r }
 ### start solution ####
+fileurl<-download.file("https://raw.githubusercontent.com/genomicsclass/dagdata/master/inst/extdata/msleep_ggplot2.csv",destfile = "D://Data Science Track//Data//msleep_ggplot2.csv")
+file.exists("D://Data Science Track//Data//msleep_ggplot2.csv")
+msleepData<-read.csv("D://Data Science Track//Data//msleep_ggplot2.csv")
+msleepData
+head(msleepData)
+```
+
+
+```{r }
+DFMsleep<-data.frame(msleepData)
+DFMsleep[,avrge:=bodywt^2]
+DFMsleep %>% group_by(msleepData$order,msleepData$bodywt) %>% summarise(Avrge =mean(msleepData$bodywt))
 ```
 
 
@@ -77,21 +95,27 @@ filename <- "msleep_ggplot2.csv"
 
 
 ```{r }
+```
+
+
+```{r }
+#remmove NA for sleep_rem 
+DFMsleep$sleep_rem[is.na(DFMsleep$sleep_rem)]<-mean(DFMsleep$sleep_rem,na.rm = TRUE)
+#remmove NA for  sleep-cyle
+DFMsleep$sleep_cycle[is.na(DFMsleep$sleep_cycle)]<-mean(DFMsleep$sleep_cycle,na.rm = TRUE)
+#remve NA for brainwt
+DFMsleep$brainwt[is.na(DFMsleep$brainwt)]<-mean(DFMsleep$brainwt,na.rm = TRUE)
+DFMsleep$vore[is.na(DFMsleep$vore=="NA")]<-"omni"
+#remove na for conservatin
+DFMsleep$conservation[is.na(DFMsleep$conservation=="NA")]<-"Ic"
 
 ```
 
 
 ```{r }
-
-```
-
-
-```{r }
-
-```
-
-
-```{r }
+#Now There is no any null
+sum(is.na(DFMsleep))
+colSums(is.na(DFMsleep))
 ### end solution ###
 ```
 
@@ -111,12 +135,12 @@ filename <- "msleep_ggplot2.csv"
 
 
 ```{r }
-
+DFMsleep %>% group_by() %>% summarise(Avrge_sleepTotal =mean(msleepData$sleep_total))
 ```
 
 
 ```{r }
-
+filter(msleepData,order=='carnivores')
 ```
 
 
